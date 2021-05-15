@@ -4,11 +4,12 @@ app = express();
 bodyParser= require('body-parser');
 require('dotenv').config()
 
+
 var distDir = __dirname;
 app.use(express.static(distDir));
 
 
-//załadowanie kontrolerów
+//załadowanie routerów
 test= require('./routes/test');
 users= require('./routes/users');
 
