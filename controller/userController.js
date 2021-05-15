@@ -29,11 +29,11 @@ exports.register = async function (req, res, next) {
             //stworzenie nowego użytkownika
             let sql, param
             if (req.body.nazwisko) {
-                sql = "INSERT INTO `agent` (`email`, `imie`, `nazwisko`, `haslo`) VALUES (?, ?, ?, ?)"
+                sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `haslo`) VALUES (?, ?, ?, ?)"
                 param = [req.body.email, req.body.imie, req.body.nazwisko, req.body.haslo]
             }
             else {
-                sql = "INSERT INTO `agent` (`email`, `imie`, `haslo`) VALUES (?, ?, ?)"
+                sql = "INSERT INTO `agenci` (`email`, `imie`, `haslo`) VALUES (?, ?, ?)"
                 param = [req.body.email, req.body.imie, req.body.haslo]
             }
 
@@ -67,12 +67,19 @@ exports.login = async function(req, res, next) {
         answer(res,400,"Brak wszystkich danych")
     else {
     
-        let sql = "Select * from agent where email = ? and haslo = ?"
+        let sql = "Select * from agenci where email = ? and haslo = ?"
         let param = [email,haslo]
 
-        let user = await db.preparedQuery(sql,param)
+        try{
+            var user = await db.preparedQuery(sql,param)
+        }
+        catch(e) {
+            console.log(e)
+            return answer(req,500,"Coś nie tak z połączeniem z bazą danych")
+        }
+        
 
-        if (user.length==0){
+        if (user.length==0 || !user){
             answer(res,400,"Nieprawidłowe dane logowania")
         }
         else{
