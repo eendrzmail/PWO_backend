@@ -1,6 +1,7 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const db = require('../db/db')
+const crypto = require('crypto')
 
 //REJSTRACJA
 exports.register = async function (req, res, next) {
@@ -28,13 +29,16 @@ exports.register = async function (req, res, next) {
         ) {
             //stworzenie nowego użytkownika
             let sql, param
+
+            let haslo_hash=crypto.createHash('sha256').update(req.body.haslo).digest('hex');
+
             if (req.body.nazwisko) {
                 sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `haslo`) VALUES (?, ?, ?, ?)"
-                param = [req.body.email, req.body.imie, req.body.nazwisko, req.body.haslo]
+                param = [req.body.email, req.body.imie, req.body.nazwisko, haslo_hash]
             }
             else {
                 sql = "INSERT INTO `agenci` (`email`, `imie`, `haslo`) VALUES (?, ?, ?)"
-                param = [req.body.email, req.body.imie, req.body.haslo]
+                param = [req.body.email, req.body.imie, haslo_hash]
             }
 
             db.preparedQuery(sql, param).then(x => {
@@ -75,9 +79,10 @@ exports.login = async function(req, res, next) {
     if (!email || !haslo) 
         answer(res,400,"Brak wszystkich danych")
     else {
+        let haslo_hash=crypto.createHash('sha256').update(req.body.haslo).digest('hex');
     
         let sql = "Select * from agenci where email = ? and haslo = ?"
-        let param = [email,haslo]
+        let param = [email,haslo_hash]
 
         try{
             var user = await db.preparedQuery(sql,param)

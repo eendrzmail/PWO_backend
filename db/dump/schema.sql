@@ -24,7 +24,7 @@ SET time_zone = "+01:00";
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `agent`
+-- Struktura tabeli dla tabeli `agenci`
 --
 
 CREATE TABLE `agenci` (
@@ -38,20 +38,20 @@ CREATE TABLE `agenci` (
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `samochod`
+-- Struktura tabeli dla tabeli `samochody`
 --
 
 CREATE TABLE `samochody` (
   `numer_rejestracyjny` varchar(10) NOT NULL,
   `marka` varchar(50) NOT NULL,
   `model` varchar(50) NOT NULL,
-  `wlasciciel` varchar(255) NOT NULL
+  `wlasciciel` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabeli dla tabeli `wypozyczenie`
+-- Struktura tabeli dla tabeli `wypozyczenia`
 --
 
 CREATE TABLE `wypozyczenia` (
@@ -68,13 +68,13 @@ CREATE TABLE `wypozyczenia` (
 --
 
 --
--- Indeksy dla tabeli `agent`
+-- Indeksy dla tabeli `agenci`
 --
 ALTER TABLE `agenci`
   ADD PRIMARY KEY (`email`);
 
 --
--- Indeksy dla tabeli `samochod`
+-- Indeksy dla tabeli `samochody`
 --
 ALTER TABLE `samochody`
   ADD PRIMARY KEY (`numer_rejestracyjny`),

@@ -10,6 +10,4 @@ router.post('/api/register', userController.register)
 
 router.post('/api/login', userController.login)
 
-router.get('/api/test', tokenAuth.checkToken, userController.login)
-
 module.exports = router

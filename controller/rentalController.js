@@ -28,11 +28,11 @@ exports.rentCar = async function(req,res,next) {
     //sprawdź czy samochód jest wolny w tym czasie
     //wybieram wypożyczenia samochodu w których data końca jest większa niż start i data startowa jest mniejsza niż koniec (te które miałyby kolidować)  
     let sql1 = "Select * from wypozyczenia where samochod = ? AND koniec > ? AND start < koniec AND start < ?"
-    let params1 = [samochod, start, koniec]
+    let pageParams1 = [samochod, start, koniec]
 
     let obstacles
     try {
-        obstacles = await db.preparedQuery(sql1,params1)
+        obstacles = await db.preparedQuery(sql1,pageParams1)
     }
     catch (e) {
         return answer(res,500,"Problem z połączeniem z bazą danych")
@@ -44,20 +44,51 @@ exports.rentCar = async function(req,res,next) {
 
     //jeśli nic nie koliduje, to wypożycz
     let sql = "Insert into wypozyczenia (`start`, `koniec`, `samochod`, `utworzono`, `kto_utworzyl`) values (?, ?, ?, NOW(), ?)"
-    let params = [start,koniec,samochod,user.email]
+    let pageParams = [start,koniec,samochod,user.email]
 
     try {
-        let r = await db.preparedQuery(sql,params)
+        let r = await db.preparedQuery(sql,pageParams)
         return answer(res,201,`Pomyślnie utworzono wypożyczenie dla ${user.email} w termienie ${start} - ${koniec}`)
     }
     catch (e) {
+        if (e.code == "ER_NO_REFERENCED_ROW_2") {
+            return answer(res,400,"Taki samochód nie istnieje")
+        }
         return answer(res,500,"Wystąpił problem z połączeniem z bazą danych")
     } 
 
 }
 
 exports.getHistory = async function(req,res,next) {
-    
+
+    const { page } = req.query;
+
+    let sql = "Select * from wypozyczenia ORDER BY id desc LIMIT 10 OFFSET ?"
+    let sql2 = "Select count(*) as suma from wypozyczenia"
+
+    let pageParam = isNaN(+page) || +page<=0 ? 1 : +page
+    pageParam = --pageParam * 10
+
+
+    try {
+        let r = await db.preparedQuery(sql,pageParam)
+        let r2 = await db.query(sql2)
+
+        let allPages = (Math.floor( (+r2[0].suma / 10) +1 ))
+
+
+        let ob = {
+            "strona":(pageParam / 10) + 1,
+            "wszystkich":allPages, 
+            "wypozyczenia":r
+        }
+
+        res.status(200)
+        return res.send(ob)
+    }
+    catch(e) {
+        return answer(res,500,"Wystąpił problem z połączeniem z bazą danych")
+    }
 }
 
 
