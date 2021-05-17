@@ -26,7 +26,7 @@
 *-  parametr wyamgany
 
 ### Przykład użycia:
-![rejstracja](./screenshots/Rejestracja.png)
+![rejstracja](./screenshots/Rejestracja.PNG)
 
 # /login
 ## POST
@@ -39,7 +39,7 @@
 *-  parametr wyamgany
 
 ### Przykład użycia:
-[logowanie](./screenshots/Logowanie.png)
+[logowanie](./screenshots/Logowanie.PNG)
 
 
 # /cars
@@ -54,7 +54,7 @@
 *-  parametr wyamgany
 
 ### Przykład użycia:
-![dodawanie samochodu](./screenshots/samochod_dodawanie.png)
+![dodawanie samochodu](./screenshots/samochod_dodawanie.PNG)
 
 # /rental
 
@@ -68,7 +68,7 @@
 *-  parametr wyamgany
 
 ### Przykład użycia:
-![dodawanie wypozyczenia](./screenshots/wypozyczenie_dodawanie.png)
+![dodawanie wypozyczenia](./screenshots/wypozyczenie_dodawanie.PNG)
 
 ## GET
 |parametr||
@@ -77,9 +77,9 @@
 
 *-  parametr wyamgany
 
-![historia wypozyczen](./screenshots/wypozyczenie_historia.png)
+![historia wypozyczen](./screenshots/wypozyczenie_historia.PNG)
 
 # Przykładowe błędy:
 
-![historia wypozyczen](./screenshots/dodawanie_blad.png)
-![historia wypozyczen](./screenshots/dodawanie_blad2.png)
+![historia wypozyczen](./screenshots/dodawanie_blad.PNG)
+![historia wypozyczen](./screenshots/dodawanie_blad2.PNG)
