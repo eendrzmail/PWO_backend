@@ -9,6 +9,9 @@
 - Utworzenie wypożyczenia
 - Pobranie dodanych wypożyczeń
 
+## adres hostowanego api:
+[https://wypozyczalnia-nodejs.herokuapp.com/api/](https://wypozyczalnia-nodejs.herokuapp.com/api/)
+
 
 # Api wykorzystuje JWT Bearer Token oraz zostało podzielone na 4 endpointy:
 
@@ -23,7 +26,7 @@
 | haslo*       |
 | powtorzhaslo* |
 
-*-  parametr wyamgany
+*-  parametr wymagany
 
 ### Przykład użycia:
 ![rejstracja](./screenshots/Rejestracja.PNG)
@@ -36,10 +39,10 @@
 |email*|
 | haslo*|
 
-*-  parametr wyamgany
+*-  parametr wymagany
 
 ### Przykład użycia:
-[logowanie](./screenshots/Logowanie.PNG)
+![logowanie](./screenshots/Logowanie.PNG)
 
 
 # /cars
@@ -51,7 +54,7 @@
 |model*|
 |numer_rejestracyjny*|
 
-*-  parametr wyamgany
+*-  parametr wymagany
 
 ### Przykład użycia:
 ![dodawanie samochodu](./screenshots/samochod_dodawanie.PNG)
@@ -75,7 +78,7 @@
 |--|-|
 |page|nr strony|
 
-*-  parametr wyamgany
+*-  parametr wymagany
 
 ![historia wypozyczen](./screenshots/wypozyczenie_historia.PNG)
 
