@@ -14,17 +14,17 @@ exports.register = async function (req, res, next) {
     }
     else {
         //sprawdź poprawność danych
-        regex_email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/gm
-        regex_imie = /^[a-zA-Z]{2,50}/gm
-        regex_nazwisko = /^[a-zA-Z]{2,100}/gm
-        regex_haslo = /^.*(?=.[a-z]{1,})(?=.*[A-Z]{1,}).*/gm
+        regex_email = /^[a-z]{1,}@[a-z]{1,}.[a-z]{1,}$/gim
+        regex_imie = /^[a-z]{2,50}$/gim
+        regex_nazwisko = /^[a-z]{2,100}$/gim
+        regex_haslo = /^.*(?=.[a-z]{1,})(?=.*[A-Z]{1,}).*$/gm
 
         if (
-            req.body.email.match(regex_email) &&
-            req.body.imie.match(regex_imie) &&
-            req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
-            req.body.haslo.match(regex_haslo) &&
-            req.body.haslo.length >= 7
+            !! req.body.email.match(regex_email) &&
+            !! req.body.imie.match(regex_imie) &&
+            !! req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
+            !! req.body.haslo.match(regex_haslo) &&
+            !! req.body.haslo.length >= 7
         ) {
             //stworzenie nowego użytkownika
             let sql, param
@@ -40,11 +40,20 @@ exports.register = async function (req, res, next) {
             db.preparedQuery(sql, param).then(x => {
                 answer(res, 201, "Utworzono pomyślnie")
             })
-                .catch(e => {
-                    answer(res, 400, "Użytkownik o tym mailu już istnieje")
-                    console.error("Użytkownik o tym mailu już istnieje")
-                    //throw new Error("Użytkownik o tym mailu istnieje")
-                })
+            .catch(e => {
+                console.error("Błąd przy dodawaniu użytkownika")
+
+                let msg ="Nieznany błąd"
+                if (e.code == "ER_DUP_ENTRY")
+                    return answer(res, 400, "Użytkownik o takim mailu już istnieje")
+                else 
+                    return answer(res, 500, "Wystąpił błąd z połączeniem z bazą danych")
+
+                
+
+                
+                //throw new Error("Użytkownik o tym mailu istnieje")
+            })
 
 
 

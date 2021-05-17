@@ -1,6 +1,6 @@
 var express = require('express');
-cors = require('cors');
 app = express();
+cors = require('cors');
 bodyParser= require('body-parser');
 require('dotenv').config()
 
@@ -9,9 +9,9 @@ var distDir = __dirname;
 app.use(express.static(distDir));
 
 
-//załadowanie routerów
-test= require('./routes/test');
 users= require('./routes/users');
+cars= require('./routes/cars');
+rental= require('./routes/rental');
 
 app.use(cors());
 
@@ -20,9 +20,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-//dodanie kontrolerów
-app.use(test);
+//dodanie routerów
 app.use(users);
+app.use(cars);
+app.use(rental);
 
 const port= process.env.PORT || 3000;
 app.listen(port, () => console.log(`Serwer uruchomiony. Nasluchuje na porcie ${port}`));

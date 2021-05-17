@@ -3,13 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 14 Maj 2021, 13:04
+-- Czas generowania: 15 Maj 2021, 16:34
 -- Wersja serwera: 10.4.16-MariaDB
 -- Wersja PHP: 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+01:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `wypozyczalnia`
 --
-CREATE DATABASE IF NOT EXISTS `wypozyczalnia` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `wypozyczalnia`;
 
 -- --------------------------------------------------------
 
@@ -29,14 +27,13 @@ USE `wypozyczalnia`;
 -- Struktura tabeli dla tabeli `agent`
 --
 
-DROP TABLE IF EXISTS `agent`;
-CREATE TABLE IF NOT EXISTS `agent` (
-  `email` varchar(255) NOT NULL,
+CREATE TABLE `agenci` (
+  `email` varchar(100) NOT NULL,
   `imie` varchar(50) NOT NULL,
   `nazwisko` varchar(100) DEFAULT NULL,
-  `haslo` varchar(250) NOT NULL,
-  PRIMARY KEY (`email`)
+  `haslo` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 -- --------------------------------------------------------
 
@@ -44,12 +41,11 @@ CREATE TABLE IF NOT EXISTS `agent` (
 -- Struktura tabeli dla tabeli `samochod`
 --
 
-DROP TABLE IF EXISTS `samochod`;
-CREATE TABLE IF NOT EXISTS `samochod` (
+CREATE TABLE `samochody` (
   `numer_rejestracyjny` varchar(10) NOT NULL,
   `marka` varchar(50) NOT NULL,
   `model` varchar(50) NOT NULL,
-  PRIMARY KEY (`numer_rejestracyjny`)
+  `wlasciciel` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -58,29 +54,66 @@ CREATE TABLE IF NOT EXISTS `samochod` (
 -- Struktura tabeli dla tabeli `wypozyczenie`
 --
 
-DROP TABLE IF EXISTS `wypozyczenie`;
-CREATE TABLE IF NOT EXISTS `wypozyczenie` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `wypozyczenia` (
+  `id` int(11) NOT NULL,
   `start` date NOT NULL,
   `koniec` date NOT NULL,
   `samochod` varchar(10) NOT NULL,
   `utworzono` date NOT NULL,
-  `kto_utworzyl` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `samochod` (`samochod`),
-  KEY `kto_utworzyl` (`kto_utworzyl`)
+  `kto_utworzyl` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indeksy dla zrzutów tabel
+--
+
+--
+-- Indeksy dla tabeli `agent`
+--
+ALTER TABLE `agenci`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indeksy dla tabeli `samochod`
+--
+ALTER TABLE `samochody`
+  ADD PRIMARY KEY (`numer_rejestracyjny`),
+  ADD KEY `wlasciciel` (`wlasciciel`);
+
+--
+-- Indeksy dla tabeli `wypozyczenie`
+--
+ALTER TABLE `wypozyczenia`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `samochod` (`samochod`),
+  ADD KEY `kto_utworzyl` (`kto_utworzyl`);
+
+--
+-- AUTO_INCREMENT dla zrzuconych tabel
+--
+
+--
+-- AUTO_INCREMENT dla tabeli `wypozyczenie`
+--
+ALTER TABLE `wypozyczenia`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ograniczenia dla zrzutów tabel
 --
 
 --
+-- Ograniczenia dla tabeli `samochod`
+--
+ALTER TABLE `samochody`
+  ADD CONSTRAINT `samochody_ibfk_1` FOREIGN KEY (`wlasciciel`) REFERENCES `agenci` (`email`);
+
+--
 -- Ograniczenia dla tabeli `wypozyczenie`
 --
-ALTER TABLE `wypozyczenie`
-  ADD CONSTRAINT `wypozyczenie_ibfk_1` FOREIGN KEY (`samochod`) REFERENCES `samochod` (`numer_rejestracyjny`),
-  ADD CONSTRAINT `wypozyczenie_ibfk_2` FOREIGN KEY (`kto_utworzyl`) REFERENCES `agent` (`email`);
+ALTER TABLE `wypozyczenia`
+  ADD CONSTRAINT `wypozyczenia_ibfk_1` FOREIGN KEY (`samochod`) REFERENCES `samochody` (`numer_rejestracyjny`),
+  ADD CONSTRAINT `wypozyczenia_ibfk_2` FOREIGN KEY (`kto_utworzyl`) REFERENCES `agenci` (`email`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
