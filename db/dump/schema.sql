@@ -28,7 +28,7 @@ SET time_zone = "+01:00";
 --
 
 CREATE TABLE `agenci` (
-  `email` varchar(100) NOT NULL,
+  `email` varchar(250) NOT NULL,
   `imie` varchar(50) NOT NULL,
   `nazwisko` varchar(100) DEFAULT NULL,
   `haslo` varchar(250) NOT NULL
@@ -45,7 +45,7 @@ CREATE TABLE `samochody` (
   `numer_rejestracyjny` varchar(10) NOT NULL,
   `marka` varchar(50) NOT NULL,
   `model` varchar(50) NOT NULL,
-  `wlasciciel` varchar(100) NOT NULL
+  `wlasciciel` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -60,7 +60,7 @@ CREATE TABLE `wypozyczenia` (
   `koniec` date NOT NULL,
   `samochod` varchar(10) NOT NULL,
   `utworzono` date NOT NULL,
-  `kto_utworzyl` varchar(100) NOT NULL
+  `kto_utworzyl` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

@@ -15,8 +15,17 @@ exports.rentCar = async function(req,res,next) {
     let match = !!start.match(data_regex) && !!koniec.match(data_regex) && !!samochod.match(samochod_regex)
 
     //sprawdzanie poprawności danych
-    if (!match)
-        return answer(res,400,"Niepoprawne dane")
+    if (!match) {
+        let err = {}
+        err.message = "Nieprawidłowe dane"
+        err.start =!!start.match(data_regex) 
+        err.koniec = !!koniec.match(data_regex) 
+        err.samochod = !!samochod.match(samochod_regex)
+        res.status(400)
+        return res.send(err)
+        //return answer(res,400,"Niepoprawne dane")
+    }
+        
 
     let date_start = new Date(start)
     let date_end = new Date(koniec)
@@ -25,21 +34,36 @@ exports.rentCar = async function(req,res,next) {
     if (!(date_start<date_end))
         return answer(res,400,"Data startu nie może być większa niż data końca")
 
+    // sprawdź czy samochód należy to tego użytkownika
+    sqlcar = "Select * from samochody where numer_rejestracyjny = ? AND wlasciciel = ?"
+    sqlcarparams = [samochod,user.email]
+
+    try {
+        let car = await db.preparedQuery(sqlcar,sqlcarparams)
+        if (car.length==0){
+            return answer(res,400,"Ten samochód nie należy zalogowanego użytkownika lub nie istnieje w bazie danych")
+        }
+    }
+    catch(e){
+        return answer(res,500,"Problem z połączeniem z bazą danych")
+    }
+
+
     //sprawdź czy samochód jest wolny w tym czasie
     //wybieram wypożyczenia samochodu w których data końca jest większa niż start i data startowa jest mniejsza niż koniec (te które miałyby kolidować)  
     let sql1 = "Select * from wypozyczenia where samochod = ? AND koniec > ? AND start < koniec AND start < ?"
     let pageParams1 = [samochod, start, koniec]
 
-    let obstacles
+    let errors
     try {
-        obstacles = await db.preparedQuery(sql1,pageParams1)
+        errors = await db.preparedQuery(sql1,pageParams1)
     }
     catch (e) {
         return answer(res,500,"Problem z połączeniem z bazą danych")
     }
 
-    if (obstacles.length > 0 ) {
-        return answer(res,400,"Samochów jest w tym czasie wypożyczony")
+    if (errors.length > 0 ) {
+        return answer(res,400,"Samochód jest w tym czasie wypożyczony")
     }
 
     //jeśli nic nie koliduje, to wypożycz

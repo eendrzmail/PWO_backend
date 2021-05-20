@@ -15,8 +15,17 @@ exports.addCar = async function(req,res,next) {
 
     let match = !!marka.match(marka_regex) && !!model.match(model_regex) && !!numer_rejestracyjny.match(nr_regex)
     
-    if (!match)
-        return answer(res, 400, "Dane niepoprawne")
+    if (!match) {
+        let err = {}
+        err.message = "Dane nieprawidłowe"
+        err.marka = !!marka.match(marka_regex) 
+        err.model = !!model.match(model_regex)
+        err.numer_rejestracyjny =  !!numer_rejestracyjny.match(nr_regex)
+        res.status(400)
+        return res.send(err)
+        //return answer(res, 400, "Dane niepoprawne")
+    }
+        
 
 
     let sql = "Insert into samochody (`marka`, `model`, `numer_rejestracyjny`, `wlasciciel`) values (?, ?, ?, ?)"

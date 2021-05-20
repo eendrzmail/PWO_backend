@@ -25,7 +25,7 @@ exports.register = async function (req, res, next) {
             !! req.body.imie.match(regex_imie) &&
             !! req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
             !! req.body.haslo.match(regex_haslo) &&
-            !! req.body.haslo.length >= 7
+            req.body.haslo.length >= 7
         ) {
             //stworzenie nowego użytkownika
             let sql, param
@@ -63,7 +63,16 @@ exports.register = async function (req, res, next) {
 
         }
         else {
-            answer(res, 400, "Niepoprawne dane")
+            let errstr = {}
+            errstr.message = "Niepoprawne dane"
+            errstr.email = !! req.body.email.match(regex_email)
+            errstr.imie = !! req.body.imie.match(regex_imie)
+            errstr.nazwisko = req.body.nazwisko ? !!req.body.nazwisko.match(regex_nazwisko) : true 
+            errstr.haslo = !! req.body.haslo.match(regex_haslo)
+            errstr.dlugosc_hasla= req.body.haslo.length >= 7
+            res.status(400)
+            return res.send(errstr)
+            //answer(res, 400, "Niepoprawne dane: "+errstr)
         }
     }
 
