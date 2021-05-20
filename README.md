@@ -68,7 +68,7 @@
 |koniec*|data w formacie rrrr-mm-dd|
 |samochod*| numer rejestracyjny pojazdu|
 
-*-  parametr wyamgany
+*-  parametr wymagany
 
 ### Przykład użycia:
 ![dodawanie wypozyczenia](./screenshots/wypozyczenie_dodawanie.PNG)
@@ -95,4 +95,4 @@ Starałem się korzystać z pól danych w zadaniu, dlatego też jako klucz głó
 
 Baza danych na Heroku ma również ograniczenia co do długości kluczy obcych oraz głównych, dlatego email ma długość 100, a nie 250.
 
-![schemat bazy danych](./screenshots/erd.png)
+![schemat bazy danych](./screenshots/erd.PNG)
