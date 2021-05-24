@@ -9,9 +9,6 @@
 - Utworzenie wypożyczenia
 - Pobranie dodanych wypożyczeń
 
-## adres hostowanego api:
-[https://wypozyczalnia-nodejs.herokuapp.com/api/](https://wypozyczalnia-nodejs.herokuapp.com/api/)
-
 
 # Api wykorzystuje JWT Bearer Token oraz zostało podzielone na 4 endpointy:
 
@@ -88,11 +85,5 @@
 ![historia wypozyczen](./screenshots/dodawanie_blad2.PNG)
 
 # Schemat ERD Bazy danych
-
-Jako że w projekcie w node.js nie używałem żadnego ORM, zmieniłem nazwy tabel na liczbę mnogą, aby pasowały do konwencji.
-
-Starałem się korzystać z pól danych w zadaniu, dlatego też jako klucz główny wybrałem email, czy nr. rejestracyjny. Dodałem pole właściciela do tabeli samochody, aby można było zidentyfikować kto go może wypożyczać.
-
-Baza danych na Heroku ma również ograniczenia co do długości kluczy obcych oraz głównych, dlatego email ma długość 100, a nie 250.
 
 ![schemat bazy danych](./screenshots/erd.PNG)

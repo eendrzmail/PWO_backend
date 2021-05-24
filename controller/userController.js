@@ -21,16 +21,16 @@ exports.register = async function (req, res, next) {
         regex_haslo = /^.*(?=.[a-z]{1,})(?=.*[A-Z]{1,}).*$/gm
 
         if (
-            !! req.body.email.match(regex_email) &&
-            !! req.body.imie.match(regex_imie) &&
-            !! req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
-            !! req.body.haslo.match(regex_haslo) &&
+            !!req.body.email.match(regex_email) &&
+                !!req.body.imie.match(regex_imie) &&
+                !!req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
+                !!req.body.haslo.match(regex_haslo) &&
             req.body.haslo.length >= 7
         ) {
             //stworzenie nowego użytkownika
             let sql, param
 
-            let haslo_hash=crypto.createHash('sha256').update(req.body.haslo).digest('hex');
+            let haslo_hash = crypto.createHash('sha256').update(req.body.haslo).digest('hex');
 
             if (req.body.nazwisko) {
                 sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `haslo`) VALUES (?, ?, ?, ?)"
@@ -44,20 +44,20 @@ exports.register = async function (req, res, next) {
             db.preparedQuery(sql, param).then(x => {
                 answer(res, 201, "Utworzono pomyślnie")
             })
-            .catch(e => {
-                console.error("Błąd przy dodawaniu użytkownika")
+                .catch(e => {
+                    console.error("Błąd przy dodawaniu użytkownika")
 
-                let msg ="Nieznany błąd"
-                if (e.code == "ER_DUP_ENTRY")
-                    return answer(res, 400, "Użytkownik o takim mailu już istnieje")
-                else 
-                    return answer(res, 500, "Wystąpił błąd z połączeniem z bazą danych")
+                    let msg = "Nieznany błąd"
+                    if (e.code == "ER_DUP_ENTRY")
+                        return answer(res, 400, "Użytkownik o takim mailu już istnieje")
+                    else
+                        return answer(res, 500, "Wystąpił błąd z połączeniem z bazą danych")
 
-                
 
-                
-                //throw new Error("Użytkownik o tym mailu istnieje")
-            })
+
+
+                    //throw new Error("Użytkownik o tym mailu istnieje")
+                })
 
 
 
@@ -65,11 +65,11 @@ exports.register = async function (req, res, next) {
         else {
             let errstr = {}
             errstr.message = "Niepoprawne dane"
-            errstr.email = !! req.body.email.match(regex_email)
-            errstr.imie = !! req.body.imie.match(regex_imie)
-            errstr.nazwisko = req.body.nazwisko ? !!req.body.nazwisko.match(regex_nazwisko) : true 
-            errstr.haslo = !! req.body.haslo.match(regex_haslo)
-            errstr.dlugosc_hasla= req.body.haslo.length >= 7
+            errstr.email = !!req.body.email.match(regex_email)
+            errstr.imie = !!req.body.imie.match(regex_imie)
+            errstr.nazwisko = req.body.nazwisko ? !!req.body.nazwisko.match(regex_nazwisko) : true
+            errstr.haslo = !!req.body.haslo.match(regex_haslo)
+            errstr.dlugosc_hasla = req.body.haslo.length >= 7
             res.status(400)
             return res.send(errstr)
             //answer(res, 400, "Niepoprawne dane: "+errstr)
@@ -81,42 +81,42 @@ exports.register = async function (req, res, next) {
 }
 
 //LOGOWANIE
-exports.login = async function(req, res, next) {
+exports.login = async function (req, res, next) {
 
     const { email, haslo } = req.body;
 
-    if (!email || !haslo) 
-        answer(res,400,"Brak wszystkich danych")
+    if (!email || !haslo)
+        answer(res, 400, "Brak wszystkich danych")
     else {
-        let haslo_hash=crypto.createHash('sha256').update(req.body.haslo).digest('hex');
-    
+        let haslo_hash = crypto.createHash('sha256').update(req.body.haslo).digest('hex');
+
         let sql = "Select * from agenci where email = ? and haslo = ?"
-        let param = [email,haslo_hash]
+        let param = [email, haslo_hash]
 
-        try{
-            var user = await db.preparedQuery(sql,param)
+        try {
+            var user = await db.preparedQuery(sql, param)
         }
-        catch(e) {
+        catch (e) {
             console.log(e)
-            return answer(req,500,"Coś nie tak z połączeniem z bazą danych")
-        }
-        
-
-        if (user.length==0 || !user){
-            answer(res,400,"Nieprawidłowe dane logowania")
-        }
-        else{
-            const accesToken = jwt.sign({email:user[0].email}, process.env.TOKEN_SECRET, { expiresIn: 90000 })
-
-            res.send({ accesToken }) 
+            return answer(req, 500, "Coś nie tak z połączeniem z bazą danych")
         }
 
-        
+
+        if (user.length == 0 || !user) {
+            answer(res, 400, "Nieprawidłowe dane logowania")
+        }
+        else {
+            const accesToken = jwt.sign({ email: user[0].email }, process.env.TOKEN_SECRET, { expiresIn: 90000 })
+
+            res.send({ accesToken })
+        }
+
+
     }
 }
 
 function answer(res, err, msg) {
     console.log(`Odpowiedź na zapytanie z kodem ${err}`)
     res.status(+err)
-    res.send( {"message":msg} )
+    res.send({ "message": msg })
 }
