@@ -5,16 +5,14 @@ cors = require('cors');
 bodyParser = require('body-parser');
 require('dotenv').config()
 
-
 var distDir = __dirname;
+
 app.use(express.static(distDir));
+app.use(cors());
 
 
 users = require('./routes/users');
-cars = require('./routes/cars');
-rental = require('./routes/rental');
 
-app.use(cors());
 
 //parsery
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,12 +20,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 //dodanie routerów
-// app.use(users);
-app.use(cars);
-// app.use(rental);
+app.use(users);
 
-router.get('/api', (req, res) => {
-    res.send("xD")
+app.get('/', (req, res) => {
+    res.send('Hello World!')
 })
 
 const port = process.env.PORT || 3000;

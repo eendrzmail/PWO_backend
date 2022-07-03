@@ -2,15 +2,18 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const db = require('../db/db')
 const crypto = require('crypto')
-
-//REJSTRACJA
+/*
+{
+    email
+    password
+    confirmPassword
+}
+*/
 exports.register = async function (req, res, next) {
-    //sprawdź czy są wszystkie wymagane pola
-    if (!req.body.email || !req.body.imie || !req.body.haslo || !req.body.powtorzhaslo) {
+    if (!req.body.email || !req.body.imie || !req.body.password || !req.body.confirmPassword) {
         answer(res, 400, "Niewystarczające dane")
     }
-    //sprawdź czy hasła się zgadzają
-    else if (req.body.haslo != req.body.powtorzhaslo) {
+    else if (req.body.password != req.body.confirmPassword) {
         answer(res, 400, "Hasla sie nie zgadzaja")
     }
     else {
@@ -18,27 +21,27 @@ exports.register = async function (req, res, next) {
         regex_email = /^[a-z]{1,}@[a-z]{1,}.[a-z]{1,}$/gim
         regex_imie = /^[a-z]{2,50}$/gim
         regex_nazwisko = /^[a-z]{2,100}$/gim
-        regex_haslo = /^.*(?=.[a-z]{1,})(?=.*[A-Z]{1,}).*$/gm
+        regex_password = /^.*(?=.[a-z]{1,})(?=.*[A-Z]{1,}).*$/gm
 
         if (
             !!req.body.email.match(regex_email) &&
                 !!req.body.imie.match(regex_imie) &&
                 !!req.body.nazwisko ? req.body.nazwisko.match(regex_nazwisko) : true &&
-                !!req.body.haslo.match(regex_haslo) &&
-            req.body.haslo.length >= 7
+                !!req.body.password.match(regex_password) &&
+            req.body.password.length >= 7
         ) {
             //stworzenie nowego użytkownika
             let sql, param
 
-            let haslo_hash = crypto.createHash('sha256').update(req.body.haslo).digest('hex');
+            let password_hash = crypto.createHash('sha256').update(req.body.password).digest('hex');
 
             if (req.body.nazwisko) {
-                sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `haslo`) VALUES (?, ?, ?, ?)"
-                param = [req.body.email, req.body.imie, req.body.nazwisko, haslo_hash]
+                sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `password`) VALUES (?, ?, ?, ?)"
+                param = [req.body.email, req.body.imie, req.body.nazwisko, password_hash]
             }
             else {
-                sql = "INSERT INTO `agenci` (`email`, `imie`, `haslo`) VALUES (?, ?, ?)"
-                param = [req.body.email, req.body.imie, haslo_hash]
+                sql = "INSERT INTO `agenci` (`email`, `imie`, `password`) VALUES (?, ?, ?)"
+                param = [req.body.email, req.body.imie, password_hash]
             }
 
             db.preparedQuery(sql, param).then(x => {
@@ -68,8 +71,8 @@ exports.register = async function (req, res, next) {
             errstr.email = !!req.body.email.match(regex_email)
             errstr.imie = !!req.body.imie.match(regex_imie)
             errstr.nazwisko = req.body.nazwisko ? !!req.body.nazwisko.match(regex_nazwisko) : true
-            errstr.haslo = !!req.body.haslo.match(regex_haslo)
-            errstr.dlugosc_hasla = req.body.haslo.length >= 7
+            errstr.password = !!req.body.password.match(regex_password)
+            errstr.dlugosc_hasla = req.body.password.length >= 7
             res.status(400)
             return res.send(errstr)
             //answer(res, 400, "Niepoprawne dane: "+errstr)
@@ -81,17 +84,23 @@ exports.register = async function (req, res, next) {
 }
 
 //LOGOWANIE
+/*
+{
+    email
+    password
+}
+*/
 exports.login = async function (req, res, next) {
 
-    const { email, haslo } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !haslo)
+    if (!email || !password)
         answer(res, 400, "Brak wszystkich danych")
     else {
-        let haslo_hash = crypto.createHash('sha256').update(req.body.haslo).digest('hex');
+        let password_hash = crypto.createHash('sha256').update(req.body.password).digest('hex');
 
-        let sql = "Select * from agenci where email = ? and haslo = ?"
-        let param = [email, haslo_hash]
+        let sql = "Select * from agenci where email = ? and password = ?"
+        let param = [email, password_hash]
 
         try {
             var user = await db.preparedQuery(sql, param)
