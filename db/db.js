@@ -9,9 +9,9 @@ const pool = mysql.createPool({
     port: process.env.DB_PORT
 });
 
-function request(sql){
-    return new Promise((resolve,reject) => {
-        pool.query(sql,(err,res) => {
+function request(sql) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, (err, res) => {
             if (err)
                 reject(err);
             resolve(res);
@@ -19,9 +19,9 @@ function request(sql){
     })
 }
 
-function preparedRequest(sql,params){
-    return new Promise((resolve,reject) => {
-        pool.query(sql,params,(err,res) => {
+function preparedRequest(sql, params) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, params, (err, res) => {
             if (err)
                 reject(err);
             resolve(res);
@@ -29,6 +29,6 @@ function preparedRequest(sql,params){
     })
 }
 
-module.exports.pool= pool;
-module.exports.query= request;
-module.exports.preparedQuery= preparedRequest;
+module.exports.pool = pool;
+module.exports.query = request;
+module.exports.preparedQuery = preparedRequest;

@@ -48,6 +48,7 @@ exports.register = async function (req, res, next) {
                 answer(res, 201, "Utworzono pomyślnie")
             })
                 .catch(e => {
+                    console.log(e);
                     console.error("Błąd przy dodawaniu użytkownika")
 
                     let msg = "Nieznany błąd"
