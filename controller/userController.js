@@ -36,11 +36,11 @@ exports.register = async function (req, res, next) {
             let password_hash = crypto.createHash('sha256').update(req.body.password).digest('hex');
 
             if (req.body.nazwisko) {
-                sql = "INSERT INTO `agenci` (`email`, `imie`, `nazwisko`, `password`) VALUES (?, ?, ?, ?)"
+                sql = "INSERT INTO `users` (`email`, `imie`, `nazwisko`, `password`) VALUES (?, ?, ?, ?)"
                 param = [req.body.email, req.body.imie, req.body.nazwisko, password_hash]
             }
             else {
-                sql = "INSERT INTO `agenci` (`email`, `imie`, `password`) VALUES (?, ?, ?)"
+                sql = "INSERT INTO `users` (`email`, `imie`, `password`) VALUES (?, ?, ?)"
                 param = [req.body.email, req.body.imie, password_hash]
             }
 
@@ -99,7 +99,7 @@ exports.login = async function (req, res, next) {
     else {
         let password_hash = crypto.createHash('sha256').update(req.body.password).digest('hex');
 
-        let sql = "Select * from agenci where email = ? and password = ?"
+        let sql = "Select * from users where email = ? and password = ?"
         let param = [email, password_hash]
 
         try {
