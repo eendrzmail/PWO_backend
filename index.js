@@ -22,14 +22,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 //dodanie routerów
-app.use(users);
+// app.use(users);
 app.use(cars);
-app.use(rental);
+// app.use(rental);
 
 router.get('/api', (req, res) => {
-
-    res.send([{ "endpoint": "/register", "methods": ["POST"] }, { "endpoint": "/login", "methods": ["POST"] },
-    { "endpoint": "/cars", "methods": ["POST"] }, { "endpoint": "/rental", "methods": ["POST", "GET"] }])
+    res.send("xD")
 })
 
 const port = process.env.PORT || 3000;
