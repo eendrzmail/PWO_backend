@@ -12,6 +12,7 @@ app.use(cors());
 
 users = require('./routes/users');
 positions = require('./routes/positions');
+employees = require('./routes/employees');
 
 
 //parsery
@@ -22,6 +23,7 @@ app.use(bodyParser.raw());
 //dodanie routerów
 app.use(users);
 app.use(positions);
+app.use(employees);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
