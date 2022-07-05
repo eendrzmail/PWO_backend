@@ -125,6 +125,10 @@ exports.login = async function (req, res, next) {
     }
 }
 
+exports.validate = async function (req, res) {
+    res.send("OK")
+}
+
 function answer(res, err, msg) {
     console.log(`Odpowiedź na zapytanie z kodem ${err}`)
     res.status(+err)
