@@ -18,3 +18,19 @@ content-type: application/json
     "email": "aaa@aa.aa",
     "password": "aA1234567Aa"
 }
+
+###
+
+GET https://prac-wyt-opr-backend.herokuapp.com/api/validate/ HTTP/1.1
+content-type: application/json
+
+{
+}
+
+###
+
+GET http://127.0.0.1:3000/api/positions/ HTTP/1.1
+content-type: application/json
+
+{
+}

@@ -11,6 +11,7 @@ app.use(cors());
 
 
 users = require('./routes/users');
+positions = require('./routes/positions');
 
 
 //parsery
@@ -20,6 +21,7 @@ app.use(bodyParser.raw());
 
 //dodanie routerów
 app.use(users);
+app.use(positions);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
