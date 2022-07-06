@@ -25,13 +25,11 @@ exports.getOne = async function (req, res, next) {
     catch (err) {
         answer(res, 500, "Poroblem z połączniem do bazy danych")
     }
-
 }
 
 const POSTSchema = object({
     imie: string().required(),
     nazwisko: string().required(),
-    msc_pracy: number().required(),
     id_stanowiska: number().required()
 })
 exports.post = async function (req, res, next) {
@@ -41,9 +39,9 @@ exports.post = async function (req, res, next) {
 
     console.log(body)
     sql = "insert into employees " +
-        "(`imie`, `nazwisko`, `msc_pracy`, `status`,  `id_stanowiska`) values " +
-        "(?, ?, ?, 1, ?)"
-    sqlparams = [body.imie, body.nazwisko, body.msc_pracy, body.id_stanowiska]
+        "(`imie`, `nazwisko`, `data_rozpoczecia`, `status`,  `id_stanowiska`) values " +
+        "(?, ?, NOW(), 1, ?)"
+    sqlparams = [body.imie, body.nazwisko, body.id_stanowiska]
 
     try {
         let r = await db.preparedQuery(sql, sqlparams)
@@ -51,6 +49,7 @@ exports.post = async function (req, res, next) {
         res.send(body)
     }
     catch (e) {
+        console.log(e);
         if (e.code == 'ER_NO_REFERENCED_ROW_2')
             return answer(res, 500, "Brak takiego stanowiska")
         return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
@@ -61,7 +60,8 @@ const PUTSchema = object({
     id: number().required(),
     imie: string().required(),
     nazwisko: string().required(),
-    msc_pracy: number().required(),
+    data_rozpoczecia: number().required(),
+    status: boolean().required(),
     id_stanowiska: number().required()
 })
 exports.put = async function (req, res, next) {
@@ -69,9 +69,9 @@ exports.put = async function (req, res, next) {
 
     if (!await PUTSchema.isValid(body)) return answer(res, 400, "niepoprawne dane")
 
-    sql = "update employees set `imie` = ?, `nazwisko` = ?, `msc_pracy` = ?, `id_stanowiska` = ? where (id = ?)"
+    sql = "update employees set `imie` = ?, `nazwisko` = ?, `data_rozpoczecia` = ?, `id_stanowiska` = ? ,`status` = ? where (id = ?)"
 
-    sqlparams = [body.imie, body.nazwisko, body.msc_pracy, body.id_stanowiska, body.id]
+    sqlparams = [body.imie, body.nazwisko, body.data_rozpoczecia, body.id_stanowiska, body.status, body.id]
 
     try {
         let r = await db.preparedQuery(sql, sqlparams)
