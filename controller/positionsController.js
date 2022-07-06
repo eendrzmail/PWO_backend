@@ -21,7 +21,7 @@ exports.getOne = async function (req, res, next) {
 
     try {
         const positions = await db.preparedQuery(sql, sqlparams);
-        res.send(positions)
+        res.send(positions[0] || {})
     }
     catch (err) {
         answer(res, 500, "Poroblem z połączniem do bazy danych")
