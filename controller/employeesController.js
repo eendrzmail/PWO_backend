@@ -71,7 +71,7 @@ exports.put = async function (req, res, next) {
 
     sql = "update employees set `imie` = ?, `nazwisko` = ?, `data_rozpoczecia` = ?, `id_stanowiska` = ? ,`status` = ? where (id = ?)"
 
-    sqlparams = [body.imie, body.nazwisko, body.data_rozpoczecia, body.id_stanowiska, body.status, body.id]
+    sqlparams = [body.imie, body.nazwisko, body.data_rozpoczecia, body.id_stanowiska, body.status ? 1 : 0, body.id]
 
     try {
         let r = await db.preparedQuery(sql, sqlparams)
