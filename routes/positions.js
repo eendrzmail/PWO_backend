@@ -4,7 +4,7 @@ const router = express.Router();
 const positionController = require('../controller/positionsController')
 const tokenAuth = require('../middleware/tokenAuthentication')
 
-// router.post('/api/login', userController.login)
 router.get('/api/positions', positionController.get)
+router.post('/api/positions', positionController.post)
 
 module.exports = router
