@@ -45,11 +45,12 @@ content-type: application/json
 
 ### positions
 
-POST http://127.0.0.1:3000/api/positions/ HTTP/1.1
+PUT http://127.0.0.1:3000/api/positions/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "asd",
+    "id": 1,
+    "name": "xDD",
     "salary": 1000
 }
 
@@ -59,10 +60,18 @@ POST http://127.0.0.1:3000/api/employees/ HTTP/1.1
 content-type: application/json
 
 {
-    "imie": "Kamień",
-    "nazwisko": "Tak",
-    "msc_pracy": 11,
-    "id_stanowiska": 1
+  "id_stanowiska": 51,
+  "imie": "asad",
+  "nazwisko": "dsa"
+}
+
+### employees
+
+GET http://127.0.0.1:3000/api/employees/ HTTP/1.1
+content-type: application/json
+
+{
+
 }
 
 ### employees
