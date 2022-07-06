@@ -14,6 +14,20 @@ exports.get = async function (req, res, next) {
     }
 }
 
+exports.getOne = async function (req, res, next) {
+    let sql = "Select * from employees as e left join positions as p on e.id_stanowiska = p.id where e.id=?"
+    sqlparams = [req.params.id]
+
+    try {
+        const positions = await db.preparedQuery(sql, sqlparams);
+        res.send(positions)
+    }
+    catch (err) {
+        answer(res, 500, "Poroblem z połączniem do bazy danych")
+    }
+
+}
+
 const POSTSchema = object({
     imie: string().required(),
     nazwisko: string().required(),
@@ -23,7 +37,7 @@ const POSTSchema = object({
 exports.post = async function (req, res, next) {
     const body = POSTSchema.cast(req.body)
 
-    if (!await POSTSchema.isValid(body)) answer(res, 400, "niepoprawne dane")
+    if (!await POSTSchema.isValid(body)) return answer(res, 400, "niepoprawne dane")
 
     console.log(body)
     sql = "insert into employees " +

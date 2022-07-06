@@ -37,6 +37,14 @@ content-type: application/json
 
 ### positions
 
+GET http://127.0.0.1:3000/api/positions/1 HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### positions
+
 POST http://127.0.0.1:3000/api/positions/ HTTP/1.1
 content-type: application/json
 
@@ -55,4 +63,13 @@ content-type: application/json
     "nazwisko": "Tak",
     "msc_pracy": 11,
     "id_stanowiska": 1
+}
+
+### employees
+
+GET http://127.0.0.1:3000/api/employees/1 HTTP/1.1
+content-type: application/json
+
+{
+
 }

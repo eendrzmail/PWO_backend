@@ -15,6 +15,20 @@ exports.get = async function (req, res, next) {
 
 }
 
+exports.getOne = async function (req, res, next) {
+    let sql = "Select * from positions where id=?"
+    sqlparams = [req.params.id]
+
+    try {
+        const positions = await db.preparedQuery(sql, sqlparams);
+        res.send(positions)
+    }
+    catch (err) {
+        answer(res, 500, "Poroblem z połączniem do bazy danych")
+    }
+
+}
+
 const postSchema = object({
     name: string().required(),
     salary: number().required()
@@ -22,7 +36,7 @@ const postSchema = object({
 exports.post = async function (req, res, next) {
     const body = postSchema.cast(req.body)
 
-    if (!await postSchema.isValid(body)) answer(res, 400, "niepoprawne dane")
+    if (!await postSchema.isValid(body)) return answer(res, 400, "niepoprawne dane")
 
     sql = "insert into positions (`nazwa`, `podstawa`) values  (?, ?)"
     sqlparams = [body.name, body.salary]
