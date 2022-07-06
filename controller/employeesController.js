@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { object, string, number, boolean } = require('yup');
+const { object, string, number, boolean, date } = require('yup');
 const db = require('../db/db')
 
 exports.get = async function (req, res, next) {
@@ -65,7 +65,7 @@ const PUTSchema = object({
     id: number().required(),
     imie: string().required(),
     nazwisko: string().required(),
-    data_rozpoczecia: number().required(),
+    data_rozpoczecia: date().required(),
     status: boolean().required(),
     id_stanowiska: number().required()
 })
@@ -81,7 +81,7 @@ exports.put = async function (req, res, next) {
     try {
         let r = await db.preparedQuery(sql, sqlparams)
         res.status(200)
-        res.send(body)
+        return res.send(body)
     }
     catch (e) {
         return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")

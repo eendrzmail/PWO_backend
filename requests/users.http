@@ -82,3 +82,19 @@ content-type: application/json
 {
 
 }
+
+### employees
+
+PUT http://127.0.0.1:3000/api/employees HTTP/1.1
+content-type: application/json
+
+ {
+  "id": 11,
+  "imie": "asd",
+  "nazwisko": "asd",
+  "data_rozpoczecia": "2022-07-06T00:00:00.000Z",
+  "status": 1,
+  "id_stanowiska": 11,
+  "nazwa": "tynkarz4",
+  "podstawa": 200
+}
