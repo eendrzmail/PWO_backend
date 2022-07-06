@@ -57,6 +57,32 @@ exports.post = async function (req, res, next) {
     }
 }
 
+const PUTSchema = object({
+    id: number().required(),
+    imie: string().required(),
+    nazwisko: string().required(),
+    msc_pracy: number().required(),
+    id_stanowiska: number().required()
+})
+exports.put = async function (req, res, next) {
+    const body = PUTSchema.cast(req.body)
+
+    if (!await PUTSchema.isValid(body)) return answer(res, 400, "niepoprawne dane")
+
+    sql = "update employees set `imie` = ?, `nazwisko` = ?, `msc_pracy` = ?, `id_stanowiska` = ? where (id = ?)"
+
+    sqlparams = [body.imie, body.nazwisko, body.msc_pracy, body.id_stanowiska, body.id]
+
+    try {
+        let r = await db.preparedQuery(sql, sqlparams)
+        res.status(200)
+        res.send(body)
+    }
+    catch (e) {
+        return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
+    }
+}
+
 
 function answer(res, err, msg) {
     console.log(`Odpowiedź na zapytanie z kodem ${err}`)
