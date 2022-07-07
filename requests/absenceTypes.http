@@ -1,0 +1,40 @@
+### absenceTypes
+
+GET http://127.0.0.1:3000/api/absenceTypes/ HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### absences
+
+GET http://127.0.0.1:3000/api/absences/ HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### 
+
+POST http://127.0.0.1:3000/api/absences HTTP/1.1
+content-type: application/json
+
+ {
+    "employee_id": 1,
+    "absence_type": 1,
+    "absence_from": null,
+    "absence_to": null
+}
+
+### 
+
+PUT http://127.0.0.1:3000/api/absences HTTP/1.1
+content-type: application/json
+
+ {
+    "absence_id": 1,
+    "employee_id": 1,
+    "absence_type": 11,
+    "absence_from": null,
+    "absence_to": null
+}
