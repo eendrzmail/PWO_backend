@@ -17,7 +17,9 @@ exports.get = async function (req, res, next) {
 }
 
 exports.getOne = async function (req, res, next) {
-    let sql = "Select * from employees as e left join positions as p on e.id_stanowiska = p.id where (e.id = ?)"
+    let sql = "Select " +
+        "e.id,e.imie,e.nazwisko,e.data_rozpoczecia,e.status,e.id_stanowiska,p.nazwa,p.podstawa " +
+        " from employees as e left join positions as p on e.id_stanowiska = p.id where (e.id = ?)"
     let sqlparams = [req.params.id]
 
     console.log(req.params.id);
