@@ -41,6 +41,11 @@ content-type: application/json
 
 ### BONUSES
 
+GET https://prac-wyt-opr-backend.herokuapp.com/api/bonuses/1 HTTP/1.1
+content-type: application/json
+
+
+###
 GET http://127.0.0.1:3000/api/bonuses/1 HTTP/1.1
 content-type: application/json
 
@@ -52,7 +57,7 @@ content-type: application/json
 
  {
     "employee_id": 1,
-    "value": 1000,
+    "value": 2000,
     "bonus_date": null 
 }
 

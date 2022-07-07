@@ -3,12 +3,12 @@ const { object, string, number, boolean, date } = require('yup');
 const db = require('../db/db')
 
 exports.getOne = async function (req, res, next) {
-    let sql = "Select * from BONUSES where (bonus_id = ?)"
+    let sql = "Select * from BONUSES where (employee_id = ?)"
     let sqlparams = [req.params.id]
 
     try {
         const positions = await db.preparedQuery(sql, sqlparams);
-        res.send(positions[0] || {})
+        res.send(positions || [])
     }
     catch (err) {
         answer(res, 500, "Poroblem z połączniem do bazy danych")
@@ -72,8 +72,8 @@ exports.put = async function (req, res, next) {
     }
     catch (e) {
         if (e.code == 'ER_NO_REFERENCED_ROW_2')
-        return answer(res, 400, "Nieprawidłowe połączenie")
-    return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
+            return answer(res, 400, "Nieprawidłowe połączenie")
+        return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
     }
 }
 
