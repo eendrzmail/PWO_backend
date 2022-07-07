@@ -15,6 +15,7 @@ positions = require('./routes/positions');
 employees = require('./routes/employees');
 absenceTypes = require('./routes/absenceTypes');
 absences = require('./routes/absences');
+bonuses = require('./routes/bonuses');
 
 
 //parsery
@@ -28,6 +29,7 @@ app.use(positions);
 app.use(employees);
 app.use(absenceTypes);
 app.use(absences);
+app.use(bonuses);
 
 app.get('/', (req, res) => {
     res.send('Hello World!')

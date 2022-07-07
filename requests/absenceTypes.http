@@ -38,3 +38,32 @@ content-type: application/json
     "absence_from": null,
     "absence_to": null
 }
+
+### BONUSES
+
+GET http://127.0.0.1:3000/api/bonuses/1 HTTP/1.1
+content-type: application/json
+
+
+###
+
+POST http://127.0.0.1:3000/api/bonuses HTTP/1.1
+content-type: application/json
+
+ {
+    "employee_id": 1,
+    "value": 1000,
+    "bonus_date": null 
+}
+
+### 
+
+PUT http://127.0.0.1:3000/api/bonuses HTTP/1.1
+content-type: application/json
+
+ {
+    "bonus_id": 1,
+    "employee_id": 11,
+    "value": 700,
+    "bonus_date": null 
+}
