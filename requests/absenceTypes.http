@@ -8,7 +8,7 @@ content-type: application/json
 
 ### absences
 
-GET http://127.0.0.1:3000/api/absences/ HTTP/1.1
+GET http://127.0.0.1:3000/api/absences/11 HTTP/1.1
 content-type: application/json
 
 {

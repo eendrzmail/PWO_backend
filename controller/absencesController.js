@@ -14,6 +14,20 @@ exports.get = async function (req, res, next) {
     }
 }
 
+exports.getOne = async function (req, res, next) {
+    let sql = "Select * from absences left join employees on absences.employee_id = employees.id where absences.employee_id = ?"
+    let sqlparams = [req.params.id]
+
+    try {
+        const positions = await db.preparedQuery(sql, sqlparams);
+        console.log(positions);
+        res.send(positions)
+    }
+    catch (err) {
+        answer(res, 500, "Poroblem z połączniem do bazy danych")
+    }
+}
+
 /**
  * {
  *  employee_id
@@ -73,8 +87,8 @@ exports.put = async function (req, res, next) {
     }
     catch (e) {
         if (e.code == 'ER_NO_REFERENCED_ROW_2')
-        return answer(res, 400, "Nieprawidłowe połączenie")
-    return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
+            return answer(res, 400, "Nieprawidłowe połączenie")
+        return answer(res, 500, "Wystąpił problem z połączeniem z bazą danych")
     }
 }
 
